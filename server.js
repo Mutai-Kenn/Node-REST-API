@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Import Routes
 const productRoutes = require("./routes/products");
 const orderRoutes = require("./routes/orders");
+const userRoutes = require("./routes/user");
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
 // Routes Middleware
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/user", userRoutes);
 
 // Handling errors that passes thru' the routes
 app.use((req, res, next) => {
