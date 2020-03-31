@@ -15,6 +15,7 @@ exports.signup = (req, res, next) => {
       } else {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           if (err) {
+            console.log("pswd err");
             return res.status(500).json({
               error: err
             });
@@ -33,6 +34,7 @@ exports.signup = (req, res, next) => {
                 });
               })
               .catch(err => {
+                console.log("signup err");
                 res.status(500).json({
                   error: err
                 });
@@ -48,13 +50,13 @@ exports.login = (req, res, next) => {
     .then(user => {
       if (user < 1) {
         return res.status(401).json({
-          message: "Auth Failed"
+          message: "Auth Failed(user)"
         });
       }
       bcrypt.compare(req.body.password, user[0].password, (err, result) => {
         if (err) {
           return res.status(401).json({
-            message: "Auth Failed"
+            message: "Auth Failed(pwsd)"
           });
         }
         if (result) {
@@ -74,7 +76,7 @@ exports.login = (req, res, next) => {
           });
         }
         res.status(401).json({
-          message: "Auth Failed"
+          message: "Auth Failed(general)"
         });
       });
     })

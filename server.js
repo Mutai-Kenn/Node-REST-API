@@ -4,9 +4,11 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const expressHandlers = require("express-handlebars");
 const PORT = process.env.PORT || 3000;
 
 // Import Routes
+const indexRoutes = require("./routes/index");
 const productRoutes = require("./routes/products");
 const orderRoutes = require("./routes/orders");
 const userRoutes = require("./routes/user");
@@ -20,6 +22,8 @@ mongoose.connect(
   () => console.log("Connected to DB!")
 );
 
+app.engine("handlebars", expressHandlers({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 app.use(morgan("dev"));
 app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,6 +51,7 @@ app.use((req, res, next) => {
 });
 
 // Routes Middleware
+app.use("/", indexRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 app.use("/user", userRoutes);
@@ -58,7 +63,7 @@ app.use((req, res, next) => {
   next(error);
 });
 
-// Handling all the errors
+// Handling all the errors in the server side
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
   res.json({

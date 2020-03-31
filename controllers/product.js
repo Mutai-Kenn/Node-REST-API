@@ -21,7 +21,7 @@ exports.get_all_products = (req, res, next) => {
           };
         })
       };
-      res.status(200).json(response);
+      res.render("products", { title: "Products", result: response.product });
     })
     .catch(err => {
       console.log(err);
